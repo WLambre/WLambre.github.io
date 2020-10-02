@@ -4,12 +4,14 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css" integrity="sha384-DhY6onE6f3zzKbjUPRc2hOzGAdEf4/Dz+WJwBvEYL/lkkIsI3ihufq9hk9K4lVoK" crossorigin="anonymous">
+	<script  src="https://code.jquery.com/jquery-3.5.1.slim.min.js"  integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="  crossorigin="anonymous"></script>
 	<title>William Lambre</title>
 </head>
 <body>
 <h1>Welcome to William Lambre's Site</h1>
-<h2>I created a pipe size calculator for hacktoberfest as I couldn't find a good one.<br>
-This is open source; feel free to contribute at <a href="https://github.com/WLambre/WLambre.github.io">GitHub</a></h2>
+<h2>I created a pipe size calculator for hacktoberfest 2020 as I couldn't find a good one and had a website doing nothing.<br>
+This is open source; feel free to contribute or copy at <a href="https://github.com/WLambre/WLambre.github.io">GitHub</a></h2>
+<h3>Made using bootstrap 5 and jquery. </h3>
 <br>
 <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>
 <label class="btn btn-primary btn-lg" for="option1">Metric</label>
@@ -19,24 +21,24 @@ This is open source; feel free to contribute at <a href="https://github.com/WLam
 <br>
 <div class="input-group">
 	<span class="input-group-text">NPS (inches)</span>
-	<textarea class="form-control" aria-label="NPS (inches)"></textarea>
+	<input id="NPS" type="number" min="1" max="36" class="form-control" aria-label="NPS (inches)" onchange="NPS_Change()">
 	<span class="input-group-text">DN (mm)</span>
-	<textarea class="form-control" aria-label="DN (mm)"></textarea>
+	<input id="DN" type="number" min="6" max="900" class="form-control" aria-label="DN (mm)">
 	<span class="input-group-text">Outer Diameter</span>
-	<textarea class="form-control" aria-label="Outer Diameter"></textarea>
+	<input id="OD" type="number" class="form-control" aria-label="Outer Diameter">
 	<span class="input-group-text">Schedule</span>
-	<select class="form-select" aria-label="Schedule">
+	<select id="SCH" class="form-select" aria-label="Schedule">
 		<option selected>20</option>
      	 <option>40</option>
 	</select>
 	<span class="input-group-text">Wall Thickness</span>
-	<textarea class="form-control" aria-label="Wall Thickness"></textarea>
+	<input id="WT" type="number" class="form-control" aria-label="Wall thickness">
 	<span class="input-group-text">Inner Diameter</span>
-	<textarea class="form-control" aria-label="Inner Diameter"></textarea>
+	<input id="ID"  type="number" class="form-control" aria-label="Inner Diameter">
 	<span class="input-group-text">Weight</span>
-	<textarea class="form-control" aria-label="Weight"></textarea>
+	<input id="WGT" type="number" class="form-control" aria-label="Weight">
 	<span class="input-group-text">Area</span>
-	<textarea class="form-control" aria-label="Area"></textarea>
+	<input id="AREA" type="number" class="form-control" aria-label="Area">
   </div>
 
   <canvas id="myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;"></canvas>
@@ -47,6 +49,26 @@ This is open source; feel free to contribute at <a href="https://github.com/WLam
 	ctx.arc(100, 75, 50, 0, 2 * Math.PI);
 	ctx.stroke();
 	</script> 
+
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.bundle.min.js" integrity="sha384-BOsAfwzjNJHrJ8cZidOg56tcQWfp6y72vEJ8xQ9w6Quywb24iOsW913URv1IS4GD" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+var pipe_sizes = [
+	{'NPS': 1, 'DN': 25, 'OD': 33.4, 'SCH': "5s", 'WT': 1.651},
+	{'NPS': 1, 'DN': 25, 'OD': 33.4, 'SCH': "30", 'WT': 2.896},
+    {'NPS': 6, 'DN': 150, 'OD': 168.28, 'SCH': "40", 'WT': 7.112},
+	{'NPS': 6, 'DN': 150, 'OD': 168.28, 'SCH': "40", 'WT': 7.112},
+    {'NPS': 10, 'DN': 250, 'OD': 273.05, 'SCH': "10", 'WT': 4.191},
+]
+
+function NPS_Change() {
+  var x = document.getElementById("NPS").value;
+  var size = pipe_sizes.find(function (element) { 
+        return element.NPS == x; 
+    }); 
+  document.getElementById("DN").value = size.DN;
+  document.getElementById("OD").value = size.OD;
+}
+	</script>
 </body>
 </html>
