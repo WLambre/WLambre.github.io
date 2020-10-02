@@ -11,7 +11,7 @@
 <h1>Welcome to William Lambre's Site</h1>
 <h2>I created a pipe size calculator for hacktoberfest 2020 as I couldn't find a good one and had a website doing nothing.<br>
 This is open source; feel free to contribute or copy at <a href="https://github.com/WLambre/WLambre.github.io">GitHub</a></h2>
-<h3>Made using bootstrap 5 and jquery. </h3>
+<h3>Made using bootstrap 5 and javascript. </h3>
 <br>
 <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>
 <label class="btn btn-primary btn-lg" for="option1">Metric</label>
@@ -28,7 +28,7 @@ This is open source; feel free to contribute or copy at <a href="https://github.
 	<input id="OD" type="number" class="form-control" aria-label="Outer Diameter">
 	<span class="input-group-text">Schedule</span>
 	<select id="SCH" class="form-select" aria-label="Schedule">
-		<option selected>20</option>
+		<option selected>5s</option>
      	 <option>40</option>
 	</select>
 	<span class="input-group-text">Wall Thickness</span>
@@ -39,6 +39,8 @@ This is open source; feel free to contribute or copy at <a href="https://github.
 	<input id="WGT" type="number" class="form-control" aria-label="Weight">
 	<span class="input-group-text">Area</span>
 	<input id="AREA" type="number" class="form-control" aria-label="Area">
+	<span class="input-group-text">Density</span>
+	<input id="DENS" type="number" min="0" max="100000" class="form-control" value="8050" aria-label="Area">
   </div>
 
   <canvas id="myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;"></canvas>
@@ -54,6 +56,9 @@ This is open source; feel free to contribute or copy at <a href="https://github.
 
 <script type="text/javascript">
 var pipe_sizes = [
+	{'NPS': 0.125, 'DN': 6, 'OD': 10.29, 'SCH': "5s", 'WT': 0.889},
+	{'NPS': 0.25, 'DN': 8, 'OD': 13.72, 'SCH': "5s", 'WT': 1.245},
+	{'NPS': 0.5, 'DN': 15, 'OD': 21.34, 'SCH': "5s", 'WT': 1651},
 	{'NPS': 1, 'DN': 25, 'OD': 33.4, 'SCH': "5s", 'WT': 1.651},
 	{'NPS': 1, 'DN': 25, 'OD': 33.4, 'SCH': "30", 'WT': 2.896},
     {'NPS': 6, 'DN': 150, 'OD': 168.28, 'SCH': "40", 'WT': 7.112},
@@ -63,12 +68,38 @@ var pipe_sizes = [
 
 function NPS_Change() {
   var x = document.getElementById("NPS").value;
-  var size = pipe_sizes.find(function (element) { 
+  var y = document.getElementById("SCH");
+  var z = y.options[y.selectedIndex].text;
+  var sizes = pipe_sizes.filter(function (element) { 
         return element.NPS == x; 
+    }); 
+  var size = sizes.find(function (element) { 
+        return element.SCH ==  z; 
     }); 
   document.getElementById("DN").value = size.DN;
   document.getElementById("OD").value = size.OD;
+  document.getElementById("WT").value = size.WT;
+  document.getElementById("ID").value = size.OD-2*size.WT;
+  document.getElementById("AREA").value = Math.PI*(((size.OD-2*size.WT)/2)^2);
+  document.getElementById("WGT").value = (Math.PI*((size.OD/2)^2)-document.getElementById("AREA").value)*document.getElementById("DENS").value;
 }
-	</script>
+function DN_Change() {
+  var x = document.getElementById("DN").value;
+  var size = pipe_sizes.find(function (element) { 
+        return element.DN == x; 
+    }); 
+  document.getElementById("NPS").value = size.NPS;
+  document.getElementById("OD").value = size.OD;
+}
+function OD_Change() {
+  var x = document.getElementById("OD").value;
+  var size = pipe_sizes.find(function (element) { 
+        return element.OD == x; 
+    }); 
+  document.getElementById("NPS").value = size.NPS;
+  document.getElementById("DN").value = size.DN;
+}
+
+</script>
 </body>
 </html>
